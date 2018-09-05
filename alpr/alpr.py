@@ -16,6 +16,7 @@ def findPlates(imagePath):
 
 
 def get_high_confidence(a_list):
+	final = None
 	lis=[]
 	lis= list(lis)
 	for i in a_list:
@@ -24,7 +25,6 @@ def get_high_confidence(a_list):
 	    
 	#lis= lis.sort(reverse=True)
 	lis= sorted(lis, reverse=True)
-	
 	
 	for i in a_list:
 	    if i['confidence']==lis[0]:
