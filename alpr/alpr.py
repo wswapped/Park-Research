@@ -17,18 +17,17 @@ def findPlates(imagePath):
 
 def get_high_confidence(a_list):
 	final = None
-	lis=[]
-	lis= list(lis)
+	lis = []
+	lis = list(lis)
 	for i in a_list:
-	    i= dict(i)
+	    i = dict(i)
 	    lis.append(i['confidence'])
-	    
-	#lis= lis.sort(reverse=True)
+	
 	lis= sorted(lis, reverse=True)
 	
 	for i in a_list:
-	    if i['confidence']==lis[0]:
-	        final=i
+	    if i['confidence'] == lis[0]:
+	        final = i
 	        break;
 	    
 	return final
