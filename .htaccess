@@ -1,0 +1,5 @@
+<IfModule mod_rewrite.c>
+	RewriteEngine on
+	RewriteRule ^ app/index.php [L]
+</Ifmodule>
+ServerSignature Off
