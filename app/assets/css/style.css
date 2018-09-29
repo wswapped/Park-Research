@@ -1,0 +1,7 @@
+.nav-cont{
+	background: linear-gradient(90deg,#0c2646 0,#204065 60%,#2a5788);
+	padding-bottom: 7vh;
+}
+.nav-cont nav.navbar{
+	display: relative !important;
+}

@@ -14,7 +14,18 @@
 		//function to login a user
 		//if $keep_cookie is true then we could keep record for future usage
 		global $conn;
-		$sql = "SELECT id FROM users WHERE username = \"$username\" AND password = \"$password\" LIMIT 1 ";
+		//check if username is phone or email
+		if(is_numeric(trim($username, '+'))){
+			//here there is phone number
+		}else if(filter_var($username, FILTER_VALIDATE_EMAIL)){
+			//email address
+			$column = 'email';
+		}else{
+			echo "No format specified";
+			return false;
+		}
+
+		$sql = "SELECT id FROM users WHERE `$column` = \"$username\" AND password = \"$password\" LIMIT 1 ";
 		$query = $conn->query($sql) or trigger_error("Error loggin in $conn->error");
 		$data = $query->fetch_assoc();
 

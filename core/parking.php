@@ -1,5 +1,5 @@
 <?php
-	class user{
+	class parking{
 		public function add($name, $username, $phone, $email, $profile_picture = '', $gender='')
 		{
 			# adds system user
@@ -8,34 +8,35 @@
 			return $conn->insert_id;
 		}
 
-		public function details($userId)
+		public function details($id)
 		{
 			# returns user details
 			global $conn;
-			$query = $conn->query("SELECT * FROM users WHERE id = \"$userId\" LIMIT 1 ") or trigger_error("Error $conn->error");
-
+			$query = $conn->query("SELECT * FROM parking WHERE id = \"$id\" LIMIT 1 ") or trigger_error("Error $conn->error");
 			$data = $query->fetch_assoc();
-
+			$data['capacity'] = $this->totalCapacity($id);
 			return $data;
 		}
 
-
-		public function types($userId){
-			//finds the types of the user
+		public function totalCapacity($id)
+		{
+			# returns total capacity of the parking
 			global $conn;
-			$types = array();
+			$query = $conn->query("SELECT SUM(capacity) as capacity FROM parking_zones WHERE parking = \"$id\" LIMIT 1 ") or trigger_error("Error $conn->error");
+			$data = $query->fetch_assoc();
+			return $data['capacity']??0;
+		}
 
-			#!this searching function not select in user
-			$details = $this->details($userId);
+		public function userList($userId){
+			//finds user's parkings
+			global $conn;
 
-			$q = $conn->query("SELECT role FROM system_roles WHERE user = \"$userId\" AND archived = 'no' ") or trigger_error($conn->error);
+			$q = $conn->query("SELECT P.*, PR.role FROM parking AS P JOIN parking_roles AS PR ON PR.parking = P.id WHERE user = \"$userId\" AND archived = 'no' ") or trigger_error($conn->error);
 			if($q){
-				while ($data = $q->fetch_assoc() ) {
-					$types = array_merge($types, array($data['role']));
-				};
+				return $q->fetch_all(MYSQLI_ASSOC);
+			}else{
+				return false;
 			}
-
-			return $types;
 		}
 
 		public function getTypeUsers($type){
