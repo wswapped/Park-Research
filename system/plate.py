@@ -6,7 +6,6 @@ import pdb
 import cProfile as cp
 from server import server
 
-
 def recognize(queue=None, frame=None):
 	# Start the profiler
 	pr = cp.Profile()
@@ -15,10 +14,11 @@ def recognize(queue=None, frame=None):
 	while True:
 		pr.enable()
 		n = n+1
-		print("Loop "+str(n))
 		# //saving frame as current
 		frameFile = os.path.sep.join(('alpr', 'samples', "current.jpg"))
-		frameData = queue.get()
+		queueData = queue.get()
+		frameData = queueData['frame']
+		movementType = queueData['movement']
 		
 		if len(frameData)>0:
 			cv2.imwrite(frameFile, frameData)
@@ -50,9 +50,16 @@ def recognize(queue=None, frame=None):
 				returnPlates.append({'plate':plateFound['plate'], 'confidence':plateFound['confidence'], 'region':plateFound['coordinates']})
 			print("Candidates: "+str(returnPlates)+"\n")
 			detectedPlate = alpr.get_high_confidence(returnPlates)
+			print('True Plate: '+str(detectedPlate))
+
 			if detectedPlate:
+				print("movement"+movementType)
 				serverInst = server('http://localhost', 'smartpark/api/index.php')
-				data = serverInst.enterCar(detectedPlate, 1, 1)
+
+				if(movementType == 'entry'):
+					data = serverInst.enterCar(detectedPlate['plate'], 1, 1)
+				elif(movementType == 'exit'):
+					data = serverInst.exitCar(detectedPlate['plate'], 1, 1)
 				print(data)
 
 		else:

@@ -41,12 +41,19 @@
 								$mvt = $Movement->parkList($parksId);
 								$userParking = $Parking->userList($currentUserId);
 								foreach ($mvt as $key => $move) {
+									$exitTime = '-';
+									$fees = '0';
+									if($move['exitMovement']){
+										$exitM = $move['exitMovement'];
+										$exitTime = $exitM['time'];
+										$fees = 200;
+									}
 									?>
 										<tr>
 											<td><?php echo $move['car']; ?></td>
 											<td><?php echo date(STANDARD_TIMETEXT_FORMAT, strtotime($move['time'])); ?></td>
-											<td><?php echo "-"; ?></td>
-											<td>200 Frw</td>
+											<td><?php echo date(STANDARD_TIMETEXT_FORMAT, strtotime($exitTime)); ?></td>
+											<td><?php echo $fees; ?> Frw</td>
 											<td class="text-right">
 												<a href="#" class="btn btn-round btn-info btn-icon btn-sm like"><i class="fas fa-angle-right"></i></a>
 												<a href="#" class="btn btn-round btn-warning btn-icon btn-sm edit"><i class="fas fa-plus"></i></a>

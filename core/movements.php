@@ -14,10 +14,23 @@
 			global $conn;
 			if(is_array($parkingId)){
 				$parkingQ = implode($parkingId, ", ");
-				$query = $conn->query("SELECT * FROM movement WHERE parking IN ($parkingQ) ") or trigger_error("Error $conn->error");
+				//select entry
+				$query = $conn->query("SELECT * FROM movement WHERE parking IN ($parkingQ) AND type = 'entry' ORDER BY time DESC ") or trigger_error("Error $conn->error");
+				$movement = array();
+				while ($data = $query->fetch_assoc()) {
+					//check the corresponding exit
+					$car = $data['car'];
+					$entryTime = $data['time'];
 
-				$data = $query->fetch_all(MYSQLI_ASSOC);
-				return $data;
+
+					$sql = "SELECT * FROM movement WHERE parking IN($parkingQ) AND type = 'exit' AND time>\"$entryTime\" LIMIT 1";
+					$exiQ = $conn->query($sql) or trigger_error($conn->error);
+					if($exiQ->num_rows){
+						$data['exitMovement'] = $exiQ->fetch_assoc();
+					}
+					$movement[] = $data;
+				}
+				return $movement;
 			}else{
 				return false;
 			}

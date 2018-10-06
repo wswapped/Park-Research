@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Sep 29, 2018 at 05:02 PM
+-- Generation Time: Oct 06, 2018 at 09:57 AM
 -- Server version: 10.1.28-MariaDB
 -- PHP Version: 7.1.11
 
@@ -43,8 +43,23 @@ CREATE TABLE `movement` (
 
 INSERT INTO `movement` (`id`, `car`, `type`, `parking`, `camera`, `time`) VALUES
 (4, 'RAC356B', 'entry', 1, 1, '2018-09-14 06:46:18'),
-(5, 'RAC356B', 'entry', 1, 1, '2018-09-14 06:57:29'),
-(6, 'RAC356B', 'entry', 1, 1, '2018-09-25 06:44:47');
+(119, 'RAD207G', 'entry', 1, 1, '2018-10-06 07:18:58'),
+(120, '2AD2Q7', 'entry', 1, 1, '2018-10-06 07:34:05'),
+(121, '2AD276', 'entry', 1, 1, '2018-10-06 07:34:09'),
+(122, 'RAD27G', 'entry', 1, 1, '2018-10-06 07:34:11'),
+(123, '2AD2D7', 'entry', 1, 1, '2018-10-06 07:34:15'),
+(124, '2A02UL', 'entry', 1, 1, '2018-10-06 07:34:16'),
+(125, 'AD207G', 'entry', 1, 1, '2018-10-06 07:37:28'),
+(126, 'RAD207', 'entry', 1, 1, '2018-10-06 07:37:42'),
+(127, 'RAD207', 'entry', 1, 1, '2018-10-06 07:37:48'),
+(128, 'RAD207', 'entry', 1, 1, '2018-10-06 07:37:52'),
+(129, 'RAD207G', 'exit', 1, 1, '2018-10-06 07:40:32'),
+(130, 'RAD207G', 'entry', 1, 1, '2018-10-06 07:37:57'),
+(131, 'RADZUQ', 'exit', 1, 1, '2018-10-06 07:39:01'),
+(132, 'AD207G', 'exit', 1, 1, '2018-10-06 07:39:17'),
+(133, 'RAD207', 'exit', 1, 1, '2018-10-06 07:39:19'),
+(134, 'RAD207', 'exit', 1, 1, '2018-10-06 07:39:21'),
+(135, 'AD207G', 'exit', 1, 1, '2018-10-06 07:39:58');
 
 -- --------------------------------------------------------
 
@@ -282,7 +297,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `movement`
 --
 ALTER TABLE `movement`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=136;
 
 --
 -- AUTO_INCREMENT for table `parking`
