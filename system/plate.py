@@ -4,7 +4,7 @@ import json
 from alpr import alpr
 import pdb
 import cProfile as cp
-import server
+from server import server
 
 
 def recognize(queue=None, frame=None):
@@ -52,7 +52,7 @@ def recognize(queue=None, frame=None):
 			detectedPlate = alpr.get_high_confidence(returnPlates)
 			if detectedPlate:
 				serverInst = server('http://localhost', 'smartpark/api/index.php')
-				data = serverInst.enterCar('RAD324B', 1, 1)
+				data = serverInst.enterCar(detectedPlate, 1, 1)
 				print(data)
 
 		else:

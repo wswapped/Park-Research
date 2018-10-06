@@ -9,8 +9,7 @@ import plate
 import queue
 import time
 
-	
-entryCameraServer = "rtsp://192.168.11.250"
+entryCameraServer = "rt-sp://192.168.11.250"
 exitCameraServer = "rtsp://192.168.11.251"
 video = "alpr/samples/rwv-1.mp4"
 frameQueue = queue.Queue(maxsize=100)

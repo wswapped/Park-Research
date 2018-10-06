@@ -10,7 +10,7 @@
 
 		public function details($id)
 		{
-			# returns user details
+			# returns parking details
 			global $conn;
 			$query = $conn->query("SELECT * FROM parking WHERE id = \"$id\" LIMIT 1 ") or trigger_error("Error $conn->error");
 			$data = $query->fetch_assoc();
@@ -95,5 +95,5 @@
 		}
 	}
 
-	$User = new user();
+	$Parking = new parking();
 ?>

@@ -94,7 +94,7 @@
 									$pwd = $_POST['password']??"";
 
 									if(login($username, $pwd)){
-										header("location:home");
+										header("location:dashboard");
 									}else{
 										?>
 											<p class="alert text-warning">Invalid username/password</p>

@@ -10,13 +10,17 @@
 
 		public function parkList($parkingId)
 		{
-			# returns movement in parking
+			# returns movement in list of parkingId
 			global $conn;
-			$query = $conn->query("SELECT * FROM movement WHERE parking = \"$parkingId\" ") or trigger_error("Error $conn->error");
+			if(is_array($parkingId)){
+				$parkingQ = implode($parkingId, ", ");
+				$query = $conn->query("SELECT * FROM movement WHERE parking IN ($parkingQ) ") or trigger_error("Error $conn->error");
 
-			$data = $query->fetch_all(MYSQLI_ASSOC);
-
-			return $data;
+				$data = $query->fetch_all(MYSQLI_ASSOC);
+				return $data;
+			}else{
+				return false;
+			}
 		}
 
 		public function types($userId){
@@ -93,5 +97,5 @@
 		}
 	}
 
-	$User = new user();
+	$Movement = new movement();
 ?>

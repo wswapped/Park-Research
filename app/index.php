@@ -26,6 +26,8 @@
 	//constants and basic libraries
 	define('DB_DATE_FORMAT', 'Y-m-d H:i:s');
 	define('STANDARD_DATE_FORMAT', 'd-m-Y');
+	define('STANDARD_TIME_FORMAT', 'd-m-Y h:i:s');
+	define('STANDARD_TIMETEXT_FORMAT', 'd M Y h:i:s');
 	define('PROJECT_NAME', 'ParkSmart');
 
 	include_once '../core/conn.php';
@@ -36,10 +38,13 @@
 	$req_parts = explode("/", trim($reqURI, '/'));
 	
 	$req_parts = array_values($req_parts);
-	$current_page_action = $base_page = $req_parts[0]??'home'; #base required page
+	$current_page_action = $base_page = $req_parts[0]??'dashboard'; #base required page
+	if(empty($current_page_action))
+		$current_page_action = $base_page = 'dashboard';
+
 	if($base_page == 'login' || $base_page == 'accountinvitationconfirm'){
-			include_once "pages/$base_page.php";
-			die();
+		include_once "pages/$base_page.php";
+		die();
 	}
 
 	
@@ -48,11 +53,10 @@
 
 
 	//list of core classes to load
-	$listToLoad = array('parking');
+	$listToLoad = array('parking', 'movements');
 
 	foreach ($listToLoad as $key => $class) {
-			# code...
-			require "../core/$class.php";
+		require "../core/$class.php";
 	}
 	$Parking = new parking();
 	require '../core/auth.php';
@@ -164,16 +168,9 @@
 <!--   Core JS Files   -->
 <script src="assets/js/core/jquery.min.js" ></script>
 <script src="assets/js/core/popper.min.js" ></script>
-
-
 <script src="assets/js/core/bootstrap.min.js" ></script>
-
-
 <script src="assets/js/plugins/perfect-scrollbar.jquery.min.js" ></script>
-
 <script src="assets/js/plugins/moment.min.js"></script>
-
-
 
 <!--  Plugin for Switches, full documentation here: http://www.jque.re/plugins/version3/bootstrap.switch/ -->
 <script src="assets/js/plugins/bootstrap-switch.js"></script>
@@ -211,9 +208,7 @@
 <!--  Plugin for the Sliders, full documentation here: http://refreshless.com/nouislider/ -->
 <script src="assets/js/plugins/nouislider.min.js" ></script>
 
-
 <!--  Google Maps Plugin    -->
-
 <script  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB2Yno10-YTnLjjn_Vtk0V8cdcY5lC4plU"></script>
 
 <!-- Place this tag in your head or just before your close body tag. -->
@@ -226,168 +221,165 @@
 <!--  Notifications Plugin    -->
 <script src="assets/js/plugins/bootstrap-notify.js"></script>
 
+<!-- Control Center: parallax effects, scripts for the example pages etc -->
+<script src="assets/js/now-ui-dashboard.min69ea.js?v=1.1.2" type="text/javascript"></script>
+<script src="assets/demo/demo.js"></script>
+<script>
+	$(document).ready(function(){
+		$().ready(function(){
+				$sidebar = $('.sidebar');
+				$sidebar_img_container = $sidebar.find('.sidebar-background');
 
+				$full_page = $('.full-page');
 
+				$sidebar_responsive = $('body > .navbar-collapse');
+				sidebar_mini_active = true;
 
+				window_width = $(window).width();
 
-<!-- Control Center for Now Ui Dashboard: parallax effects, scripts for the example pages etc --><script src="assets/js/now-ui-dashboard.min69ea.js?v=1.1.2" type="text/javascript"></script><!-- Now Ui Dashboard DEMO methods, don't include it in your project! -->
-	<script src="assets/demo/demo.js"></script>
-	<script>
-		$(document).ready(function(){
-			$().ready(function(){
-					$sidebar = $('.sidebar');
-					$sidebar_img_container = $sidebar.find('.sidebar-background');
+				fixed_plugin_open = $('.sidebar .sidebar-wrapper .nav li.active a p').html();
 
-					$full_page = $('.full-page');
+				// if( window_width > 767 && fixed_plugin_open == 'Dashboard' ){
+				//     if($('.fixed-plugin .dropdown').hasClass('show-dropdown')){
+				//         $('.fixed-plugin .dropdown').addClass('show');
+				//     }
+				//
+				// }
 
-					$sidebar_responsive = $('body > .navbar-collapse');
-					sidebar_mini_active = true;
+				$('.fixed-plugin a').click(function(event){
+					// Alex if we click on switch, stop propagation of the event, so the dropdown will not be hide, otherwise we set the  section active
+						if($(this).hasClass('switch-trigger')){
+								if(event.stopPropagation){
+										event.stopPropagation();
+								}
+								else if(window.event){
+									 window.event.cancelBubble = true;
+								}
+						}
+				});
 
-					window_width = $(window).width();
+				$('.fixed-plugin .background-color span').click(function(){
+						$(this).siblings().removeClass('active');
+						$(this).addClass('active');
 
-					fixed_plugin_open = $('.sidebar .sidebar-wrapper .nav li.active a p').html();
+						var new_color = $(this).data('color');
 
-					// if( window_width > 767 && fixed_plugin_open == 'Dashboard' ){
-					//     if($('.fixed-plugin .dropdown').hasClass('show-dropdown')){
-					//         $('.fixed-plugin .dropdown').addClass('show');
-					//     }
-					//
-					// }
-
-					$('.fixed-plugin a').click(function(event){
-						// Alex if we click on switch, stop propagation of the event, so the dropdown will not be hide, otherwise we set the  section active
-							if($(this).hasClass('switch-trigger')){
-									if(event.stopPropagation){
-											event.stopPropagation();
-									}
-									else if(window.event){
-										 window.event.cancelBubble = true;
-									}
-							}
-					});
-
-					$('.fixed-plugin .background-color span').click(function(){
-							$(this).siblings().removeClass('active');
-							$(this).addClass('active');
-
-							var new_color = $(this).data('color');
-
-							if($sidebar.length != 0){
-									$sidebar.attr('data-color',new_color);
-							}
-
-							if($full_page.length != 0){
-									$full_page.attr('filter-color',new_color);
-							}
-
-							if($sidebar_responsive.length != 0){
-									$sidebar_responsive.attr('data-color',new_color);
-							}
-					});
-
-					$('.fixed-plugin .img-holder').click(function(){
-							$full_page_background = $('.full-page-background');
-
-							$(this).parent('li').siblings().removeClass('active');
-							$(this).parent('li').addClass('active');
-
-
-							var new_image = $(this).find("img").attr('src');
-
-							if( $sidebar_img_container.length !=0 && $('.switch-sidebar-image input:checked').length != 0 ){
-									$sidebar_img_container.fadeOut('fast', function(){
-										 $sidebar_img_container.css('background-image','url("' + new_image_full_page + '")');
-										 $sidebar_img_container.fadeIn('fast');
-									});
-							}
-
-							if($full_page_background.length != 0 && $('.switch-sidebar-image input:checked').length != 0 ) {
-									var new_image_full_page = $('.fixed-plugin li.active .img-holder').find('img').data('src');
-
-									$full_page_background.fadeOut('fast', function(){
-										 $full_page_background.css('background-image','url("' + new_image_full_page + '")');
-										 $full_page_background.fadeIn('fast');
-									});
-							}
-
-							if( $('.switch-sidebar-image input:checked').length == 0 ){
-									var new_image = $('.fixed-plugin li.active .img-holder').find("img").attr('src');
-									var new_image_full_page = $('.fixed-plugin li.active .img-holder').find('img').data('src');
-
-									$sidebar_img_container.css('background-image','url("' + new_image + '")');
-									$full_page_background.css('background-image','url("' + new_image_full_page + '")');
-							}
-
-							if($sidebar_responsive.length != 0){
-									$sidebar_responsive.css('background-image','url("' + new_image + '")');
-							}
-					});
-
-					$('.switch-sidebar-image input').on("switchChange.bootstrapSwitch", function(){
-							$full_page_background = $('.full-page-background');
-
-							$input = $(this);
-
-							if($input.is(':checked')){
-									if($sidebar_img_container.length != 0){
-											$sidebar_img_container.fadeIn('fast');
-											$sidebar.attr('data-image','#');
-									}
-
-									if($full_page_background.length != 0){
-											$full_page_background.fadeIn('fast');
-											$full_page.attr('data-image','#');
-									}
-
-									background_image = true;
-							} else {
-									if($sidebar_img_container.length != 0){
-											$sidebar.removeAttr('data-image');
-											$sidebar_img_container.fadeOut('fast');
-									}
-
-									if($full_page_background.length != 0){
-											$full_page.removeAttr('data-image','#');
-											$full_page_background.fadeOut('fast');
-									}
-
-									background_image = false;
-							}
-					});
-
-					$('.switch-sidebar-mini input').on("switchChange.bootstrapSwitch", function(){
-						var $btn = $(this);
-
-						if(sidebar_mini_active == true){
-								$('body').removeClass('sidebar-mini');
-								sidebar_mini_active = false;
-								nowuiDashboard.showSidebarMessage('Sidebar mini deactivated...');
-						}else{
-								$('body').addClass('sidebar-mini');
-								sidebar_mini_active = true;
-								nowuiDashboard.showSidebarMessage('Sidebar mini activated...');
+						if($sidebar.length != 0){
+								$sidebar.attr('data-color',new_color);
 						}
 
-						// we simulate the window Resize so the charts will get updated in realtime.
-						var simulateWindowResize = setInterval(function(){
-								window.dispatchEvent(new Event('resize'));
-						},180);
+						if($full_page.length != 0){
+								$full_page.attr('filter-color',new_color);
+						}
 
-						// we stop the simulation of Window Resize after the animations are completed
-						setTimeout(function(){
-								clearInterval(simulateWindowResize);
-						},1000);
-					});
-			});
+						if($sidebar_responsive.length != 0){
+								$sidebar_responsive.attr('data-color',new_color);
+						}
+				});
+
+				$('.fixed-plugin .img-holder').click(function(){
+						$full_page_background = $('.full-page-background');
+
+						$(this).parent('li').siblings().removeClass('active');
+						$(this).parent('li').addClass('active');
+
+
+						var new_image = $(this).find("img").attr('src');
+
+						if( $sidebar_img_container.length !=0 && $('.switch-sidebar-image input:checked').length != 0 ){
+								$sidebar_img_container.fadeOut('fast', function(){
+									 $sidebar_img_container.css('background-image','url("' + new_image_full_page + '")');
+									 $sidebar_img_container.fadeIn('fast');
+								});
+						}
+
+						if($full_page_background.length != 0 && $('.switch-sidebar-image input:checked').length != 0 ) {
+								var new_image_full_page = $('.fixed-plugin li.active .img-holder').find('img').data('src');
+
+								$full_page_background.fadeOut('fast', function(){
+									 $full_page_background.css('background-image','url("' + new_image_full_page + '")');
+									 $full_page_background.fadeIn('fast');
+								});
+						}
+
+						if( $('.switch-sidebar-image input:checked').length == 0 ){
+								var new_image = $('.fixed-plugin li.active .img-holder').find("img").attr('src');
+								var new_image_full_page = $('.fixed-plugin li.active .img-holder').find('img').data('src');
+
+								$sidebar_img_container.css('background-image','url("' + new_image + '")');
+								$full_page_background.css('background-image','url("' + new_image_full_page + '")');
+						}
+
+						if($sidebar_responsive.length != 0){
+								$sidebar_responsive.css('background-image','url("' + new_image + '")');
+						}
+				});
+
+				$('.switch-sidebar-image input').on("switchChange.bootstrapSwitch", function(){
+						$full_page_background = $('.full-page-background');
+
+						$input = $(this);
+
+						if($input.is(':checked')){
+								if($sidebar_img_container.length != 0){
+										$sidebar_img_container.fadeIn('fast');
+										$sidebar.attr('data-image','#');
+								}
+
+								if($full_page_background.length != 0){
+										$full_page_background.fadeIn('fast');
+										$full_page.attr('data-image','#');
+								}
+
+								background_image = true;
+						} else {
+								if($sidebar_img_container.length != 0){
+										$sidebar.removeAttr('data-image');
+										$sidebar_img_container.fadeOut('fast');
+								}
+
+								if($full_page_background.length != 0){
+										$full_page.removeAttr('data-image','#');
+										$full_page_background.fadeOut('fast');
+								}
+
+								background_image = false;
+						}
+				});
+
+				$('.switch-sidebar-mini input').on("switchChange.bootstrapSwitch", function(){
+					var $btn = $(this);
+
+					if(sidebar_mini_active == true){
+							$('body').removeClass('sidebar-mini');
+							sidebar_mini_active = false;
+							nowuiDashboard.showSidebarMessage('Sidebar mini deactivated...');
+					}else{
+							$('body').addClass('sidebar-mini');
+							sidebar_mini_active = true;
+							nowuiDashboard.showSidebarMessage('Sidebar mini activated...');
+					}
+
+					// we simulate the window Resize so the charts will get updated in realtime.
+					var simulateWindowResize = setInterval(function(){
+							window.dispatchEvent(new Event('resize'));
+					},180);
+
+					// we stop the simulation of Window Resize after the animations are completed
+					setTimeout(function(){
+							clearInterval(simulateWindowResize);
+					},1000);
+				});
 		});
-	</script>
-	<?php
-		for($n=0; !empty($jsFiles) && $n<count($jsFiles) && is_array($jsFiles); $n++){
-			$pfile = $jsFiles[$n];
-			?>
-				<script type="text/javascript" src="<?php echo $pfile ?>"></script>
-			<?php
-		}
-	?>
+	});
+</script>
+<?php
+	for($n=0; !empty($jsFiles) && $n<count($jsFiles) && is_array($jsFiles); $n++){
+		$pfile = $jsFiles[$n];
+		?>
+			<script type="text/javascript" src="<?php echo $pfile ?>"></script>
+		<?php
+	}
+?>
 </body>
 </html>

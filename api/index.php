@@ -4,7 +4,7 @@ ob_start();
 //specify JSON as content type
 header('Content-Type: application/json');
 
-include_once '../conn.php';
+include_once '../core/conn.php';
 define('DB_DATE_FORMAT', 'Y-m-d H:i:s');
 
 $standard_date = "Y-m-d h:i:s";

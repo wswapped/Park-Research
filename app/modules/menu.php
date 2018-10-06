@@ -54,7 +54,7 @@
 					</li>
 
 					<li class="nav-item">
-						<a class="nav-link" href="#pablo">
+						<a class="nav-link" href="logout">
 							<i class="now-ui-icons users_single-02"></i>
 							<p>
 								<span class="d-lg-none d-md-block">Account</span>

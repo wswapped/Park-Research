@@ -4,6 +4,9 @@
 			<div class="card">                
 				<div class="card-header">
 					<h4 class="card-title"> Movements</h4>
+					<?php
+						
+					?>
 				</div>
 				<div class="card-body">
 					<div class="toolbar">
@@ -12,36 +15,38 @@
 					<table id="datatable" class="table table-striped table-bordered" cellspacing="0" width="100%">
 						<thead>
 							<tr>
-								<th>Name</th>
-								<th>Location</th>
-								<th>Total capacity</th>
-								<th>Cameras</th>
+								<th>Car</th>
+								<th>Entry</th>
+								<th>Exit</th>
+								<th>Fees</th>
 								<th class="disabled-sorting text-right">Actions</th>
 							</tr>
 						</thead>
 						<tfoot>
 							<tr>
-								<th>Name</th>
-								<th>Location</th>
-								<th>Total capacity</th>
-								<th>Cameras</th>
+								<th>Car</th>
+								<th>Entry</th>
+								<th>Exit</th>
+								<th>Fees</th>
 								<th class="disabled-sorting text-right">Actions</th>
 							</tr>
 						</tfoot>
 						<tbody>
 							<?php
+								$parkings = $Parking->userList($currentUserId);
+								$parksId = array(3);
+								for ($n=0; $n < count($parkings); $n++) { 
+									$parksId[] = $parkings[$n]['id'];
+								}
+								$mvt = $Movement->parkList($parksId);
 								$userParking = $Parking->userList($currentUserId);
-								foreach ($userParking as $key => $park) {
-									$parkingData = $Parking->details($park['id']);
-									$pname = $parkingData['name'];
-									$plocation = $parkingData['location'];
-									$pcapacity = $parkingData['capacity'];
+								foreach ($mvt as $key => $move) {
 									?>
 										<tr>
-											<td><?php echo $pname; ?></td>
-											<td><?php echo $plocation; ?></td>
-											<td><?php echo $pcapacity; ?></td>
-											<td>2</td>
+											<td><?php echo $move['car']; ?></td>
+											<td><?php echo date(STANDARD_TIMETEXT_FORMAT, strtotime($move['time'])); ?></td>
+											<td><?php echo "-"; ?></td>
+											<td>200 Frw</td>
 											<td class="text-right">
 												<a href="#" class="btn btn-round btn-info btn-icon btn-sm like"><i class="fas fa-angle-right"></i></a>
 												<a href="#" class="btn btn-round btn-warning btn-icon btn-sm edit"><i class="fas fa-plus"></i></a>
