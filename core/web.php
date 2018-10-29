@@ -31,6 +31,14 @@
 			return $conn->real_escape_string($variable);
 		}
 
+		public static function gendername($gender){
+			if(strtolower($gender) == 'f'){
+				return 'Female';
+			}else{
+				return 'Male';
+			}
+		}
+
 		public static function validatePhone($phoneNumber, $loc='')
 		{
 			//validates phone against given locality or international phone format

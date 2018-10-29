@@ -129,10 +129,22 @@ if($action == 'carEntry'){
 			//Let's add system role
 			$systemId = $User->attachRole($userId, $role);
 
-			//adding to parking
-			$roleAddition = $Parking->addRole($systemId->data['id'], $parking);
+			if($systemId->status){
+				//adding to parking
+				$roleAddition = $Parking->addRole($systemId->data['id'], $parking);
+				if($roleAddition->status){
+					$response = WEB::respond(true, '', array('id'=>$userId));
+				}else
+					$response = $roleAddition;
+				
+			}else{
+				//response from systemId
+				$response = $systemId;
+			}
 
-			$response = WEB::respond(true, '', array('id'=>$userId));
+			
+
+			
 		}else{
 			//error creating user is returned
 			$response = $userCreation;

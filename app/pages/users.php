@@ -114,6 +114,7 @@
 							<tr>
 								<th>Name</th>
 								<th>Phone</th>
+								<th>Email</th>
 								<th>Role</th>
 								<th>Gender</th>
 								<!-- <th class="disabled-sorting text-right">Actions</th> -->
@@ -123,6 +124,7 @@
 							<tr>
 								<th>Name</th>
 								<th>Phone</th>
+								<th>Email</th>
 								<th>Role</th>
 								<th>Gender</th>
 								<!-- <th class="disabled-sorting text-right">Actions</th> -->
@@ -138,8 +140,9 @@
 										<tr>
 											<td><?php echo $user['name']; ?></td>
 											<td><?php echo $user['phoneNumber']; ?></td>
+											<td><?php echo $user['email']; ?></td>
 											<td><?php echo implode($roles, ", "); ?></td>
-											<td>Male</td>
+											<td><?php echo WEB::gendername($user['gender']); ?></td>
 											<!-- <td class="text-right">
 												<a href="#" class="btn btn-round btn-info btn-icon btn-sm like"><i class="fas fa-angle-right"></i></a>
 												<a href="#" class="btn btn-round btn-warning btn-icon btn-sm edit"><i class="fas fa-plus"></i></a>

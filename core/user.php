@@ -26,7 +26,8 @@
 					//role already exist
 				}else{
 					//we can add role
-					$check = $conn->query("INSERT INTO system_roles(user, role) VALUES(\"$userId\", \"$roleName\")");
+					$sql = "INSERT INTO system_roles(user, role) VALUES(\"$userId\", \"$roleName\")";
+					$check = $conn->query($sql);
 					if($check){
 						//successfully added a role
 						return WEB::respond(true, '', array('id'=>$conn->insert_id));
@@ -58,7 +59,7 @@
 		{
 			# lists users
 			global $conn;
-			$query = $conn->query("SELECT * FROM users WHERE archived = \"no\"") or trigger_error("Error $conn->error");
+			$query = $conn->query("SELECT * FROM users WHERE archived = \"no\" ORDER BY createdDate DESC ") or trigger_error("Error $conn->error");
 			$data = $query->fetch_all(MYSQLI_ASSOC);
 			return $data;
 		}
