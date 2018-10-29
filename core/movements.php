@@ -25,6 +25,7 @@
 
 					$sql = "SELECT * FROM movement WHERE parking IN($parkingQ) AND type = 'exit' AND time>\"$entryTime\" LIMIT 1";
 					$exiQ = $conn->query($sql) or trigger_error($conn->error);
+					$data['exitMovement'] = '';
 					if($exiQ->num_rows){
 						$data['exitMovement'] = $exiQ->fetch_assoc();
 					}
@@ -52,6 +53,14 @@
 			}
 
 			return $types;
+		}
+
+		public function lastMovement($plate, $type = '')
+		{
+			//returns the last movement of the car
+			global $conn;
+
+			$query = $conn->query("SELECT * FROM movements  ");
 		}
 
 		public function getTypeUsers($type){

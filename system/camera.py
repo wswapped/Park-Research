@@ -5,7 +5,11 @@ import time
 from alpr import alpr
 
 def open(cameraServer, movement, queue = None):
-	cap = cv2.VideoCapture(cameraServer)	
+	cap = cv2.VideoCapture(cameraServer)
+
+	fourcc = cv2.VideoWriter_fourcc(*'XVID')
+	out = cv2.VideoWriter('output.mp4', fourcc, 20.0, (640,480))
+
 	while cap.isOpened():
 		ret, frame = cap.read();
 
@@ -13,6 +17,7 @@ def open(cameraServer, movement, queue = None):
 		if not ret:
 			print("Stream finished")
 			break
+		out.write(frame)
 
 		frame = cv2.resize(frame, (640, 480))
 		queue.queue.clear()

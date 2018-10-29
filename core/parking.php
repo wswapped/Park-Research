@@ -8,6 +8,28 @@
 			return $conn->insert_id;
 		}
 
+		public function addRole($systemRole, $parkingId){
+			//addds system role to a parking
+			global $conn;
+			//check if user is already there
+			$q = $conn->query("SELECT * FROM parking_roles WHERE systemRole = \"$systemRole\" AND parking = \"$parkingId\" AND archived = 'no'");
+			if($q){
+				//check if there is rows returned
+				if($q->num_rows){
+					return WEB::respond(false, "Parking role already exists and is active");
+				}else{
+					//here we can add role now
+					$query = $conn->query("INSERT INTO parking_roles(systemRole, parking) VALUES(\"$systemRole\", \"$parkingId\")");
+					if($query)
+						return WEB::respond(true, '', array('id'=>$conn->insert_id));
+					else
+						return WEB::respond(false, "Error adding role $conn->error");
+				}
+			}else{
+				return WEB::respond(false, "Error checking role existence $conn->error");
+			}
+		}
+
 		public function details($id)
 		{
 			# returns parking details

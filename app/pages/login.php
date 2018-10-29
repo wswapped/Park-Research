@@ -46,9 +46,7 @@
 				<span class="navbar-toggler-bar navbar-kebab"></span>
 			</button>
 
-			<div class="collapse navbar-collapse justify-content-end" id="navigation">
-		  
-			
+			<!-- <div class="collapse navbar-collapse justify-content-end" id="navigation">
 				<ul class="navbar-nav">
 					<li class="nav-item">
 						<a href="../dashboard.html" class="nav-link">
@@ -76,7 +74,7 @@
 						</a>
 					</li>
 				</ul>
-			</div>
+			</div> -->
 		</div>
 	</nav>
 	<!-- End Navbar -->

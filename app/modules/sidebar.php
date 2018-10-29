@@ -100,7 +100,7 @@
 			</div>
 		</li>
 		
-		<li >
+		<li>
 			<a data-toggle="collapse" href="#formsExamples" >
 				<i class="now-ui-icons design_image"></i>
 				<p>
@@ -143,36 +143,10 @@
 		</li>
 		
 		<li >
-			<a data-toggle="collapse" href="#tablesExamples" >						
-				<i class="now-ui-icons design_bullet-list-67"></i>
-				<p>Users <b class="caret"></b></p>
+			<a href="users" >						
+				<i class="now-ui-icons users_single-02"></i>
+				<p>Users </p>
 			</a>
-			<div class="collapse " id="tablesExamples">
-					<ul class="nav">
-					
-						<li >
-								<a href="tables/regular.html">
-										<span class="sidebar-mini-icon">RT</span>
-										<span class="sidebar-normal"> Regular Tables </span>
-								</a>
-						</li>
-					
-						<li >
-								<a href="tables/extended.html">
-										<span class="sidebar-mini-icon">ET</span>
-										<span class="sidebar-normal"> Extended Tables </span>
-								</a>
-						</li>
-					
-						<li >
-								<a href="tables/datatables.net.html">
-										<span class="sidebar-mini-icon">DT</span>
-										<span class="sidebar-normal"> DataTables.net </span>
-								</a>
-						</li>
-					
-				</ul>
-			</div>
 		</li>
 	</ul>
 </div>

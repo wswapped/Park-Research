@@ -45,14 +45,14 @@
 									$fees = '0';
 									if($move['exitMovement']){
 										$exitM = $move['exitMovement'];
-										$exitTime = $exitM['time'];
+										$exitTime = date(STANDARD_TIMETEXT_FORMAT, strtotime($exitM['time']));
 										$fees = 200;
 									}
 									?>
 										<tr>
 											<td><?php echo $move['car']; ?></td>
 											<td><?php echo date(STANDARD_TIMETEXT_FORMAT, strtotime($move['time'])); ?></td>
-											<td><?php echo date(STANDARD_TIMETEXT_FORMAT, strtotime($exitTime)); ?></td>
+											<td><?php echo $exitTime; ?></td>
 											<td><?php echo $fees; ?> Frw</td>
 											<td class="text-right">
 												<a href="#" class="btn btn-round btn-info btn-icon btn-sm like"><i class="fas fa-angle-right"></i></a>

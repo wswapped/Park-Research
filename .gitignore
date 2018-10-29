@@ -1,3 +1,5 @@
-
+system/output.mp4
+system/output.avi
+system/deep-anpr/weights.npz
 system/alpr/samples/current.jpg
 system/alpr/__pycache__

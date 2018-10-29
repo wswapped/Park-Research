@@ -1,12 +1,46 @@
 <?php
 	class user{
-		public function add($name, $username, $phone, $email, $profile_picture = '', $gender='')
+		public function add($name, $phone, $email, $profile_picture = '', $gender='')
 		{
 			# adds system user
 			global $conn;
-			$query = $conn->query("INSERT INTO users(names, username, phone, email, profile_picture, gender) VALUES (\"$name\", \"$username\", \"$phone\", \"$email\", \"$profile_picture\", \"$gender\") ") or trigger_error("Error  $conn->error");
-			return $conn->insert_id;
+			$query = $conn->query("INSERT INTO users(name, phoneNumber, email, profilePicture, gender) VALUES (\"$name\", \"$phone\", \"$email\", \"$profile_picture\", \"$gender\") ");
+
+			if($query){
+				return WEB::respond(true, '', array('id'=>$conn->insert_id));
+			}else{
+				return WEB::respond(false, 'Error: '.$conn->error);
+			}			
 		}
+
+
+		public function attachRole($userId, $roleName)
+		{
+			# attachs user with a system role
+			global $conn;
+
+			//check if user is attached to that role already
+			$check = $conn->query("SELECT * FROM system_roles WHERE user = \"$userId\" AND role = \"$roleName\" AND archived = 'no' ");
+			if($check){
+				if($check->num_rows){
+					//role already exist
+				}else{
+					//we can add role
+					$check = $conn->query("INSERT INTO system_roles(user, role) VALUES(\"$userId\", \"$roleName\")");
+					if($check){
+						//successfully added a role
+						return WEB::respond(true, '', array('id'=>$conn->insert_id));
+					}else{
+						//error
+						return WEB::respond(false, "Error adding role $conn->error");
+					}
+				}
+			}else{
+				//errror
+				return WEB::respond(false, 'Can not check user roles '.$conn->error);
+			}		
+		}
+
 
 		public function details($userId)
 		{
@@ -19,6 +53,27 @@
 			return $data;
 		}
 
+
+		public function list()
+		{
+			# lists users
+			global $conn;
+			$query = $conn->query("SELECT * FROM users WHERE archived = \"no\"") or trigger_error("Error $conn->error");
+			$data = $query->fetch_all(MYSQLI_ASSOC);
+			return $data;
+		}
+
+		public function can($userId, $action){
+			//checks if user is permitted to do something
+
+			//get user types
+			$roles = $this->types($userId);
+			if(array_keys($roles, 'parkingAdmin') || array_keys($roles, 'admin')){
+				return true;
+			}else{
+				return false;
+			}
+		}
 
 		public function types($userId){
 			//finds the types of the user
@@ -37,6 +92,22 @@
 
 			return $types;
 		}
+
+		public function creatableRoles(){
+			//Roles which can be created
+			global $conn;
+			$types = array();
+
+			$q = $conn->query("SELECT name, printname FROM role_names WHERE name != 'admin' AND archived = 'no' ") or trigger_error($conn->error);
+			if($q){
+				while ($data = $q->fetch_assoc() ) {
+					$types = array_merge($types, array($data['name']=>$data['printname']));
+				};
+			}
+			return $types;
+		}
+
+
 
 		public function getTypeUsers($type){
 			//finds the types of the user

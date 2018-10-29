@@ -16,7 +16,7 @@ frameQueue = queue.Queue(maxsize=100)
 frame = None
 globalFrame = None
 
-cameraThread = threading.Thread(target=camera.open, args=(entryCameraServer,), kwargs={'movement':'exit', 'queue':frameQueue})
+cameraThread = threading.Thread(target=camera.open, args=(entryCameraServer,), kwargs={'movement':'entry', 'queue':frameQueue})
 cameraThread.start()
 
 detectionThread = threading.Thread(target=plate.recognize, args=(), kwargs={'queue':frameQueue, 'frame':frame})
