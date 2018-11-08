@@ -79,7 +79,7 @@
 			<div class="collapse " id="componentsExamples">
 				<ul class="nav">
 					<li >
-						<a href="components/buttons.html">
+						<a href="categories">
 							<span class="sidebar-mini-icon">C</span>
 							<span class="sidebar-normal"> Categories </span>
 						</a>

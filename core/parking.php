@@ -52,8 +52,8 @@
 		public function userList($userId){
 			//finds user's parkings
 			global $conn;
-
-			$q = $conn->query("SELECT P.*, PR.role, SR.printname FROM parking AS P JOIN parking_roles AS PR ON PR.parking = P.id JOIN system_roles as SR ON PR.systemRole = SR.id JOIN role_names AS RN ON RN.name = SR.role WHERE user = \"$userId\" AND archived = 'no' ") or trigger_error($conn->error);
+			$sql = "SELECT P.*, SR.role, RN.printName FROM parking AS P JOIN parking_roles AS PR ON PR.parking = P.id JOIN system_roles as SR ON PR.systemRole = SR.id JOIN role_names AS RN ON RN.name = SR.role WHERE user = \"$userId\" AND P.archived = 'no' ";
+			$q = $conn->query($sql) or trigger_error($conn->error);
 			if($q){
 				return $q->fetch_all(MYSQLI_ASSOC);
 			}else{
